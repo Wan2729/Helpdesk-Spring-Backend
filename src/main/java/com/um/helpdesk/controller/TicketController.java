@@ -5,12 +5,14 @@ import com.um.helpdesk.entity.Ticket;
 import com.um.helpdesk.entity.TechnicianSupportStaff;
 import com.um.helpdesk.entity.TicketStatus;
 import com.um.helpdesk.service.TicketService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/tickets")
 @CrossOrigin(origins = "*")

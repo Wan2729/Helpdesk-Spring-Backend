@@ -1,4 +1,4 @@
-package com.um.helpdesk.demo;
+package com.um.helpdesk.config;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -10,7 +10,6 @@ import com.um.helpdesk.repository.DepartmentRepository;
 import com.um.helpdesk.repository.TicketRepository; // <--- IMPORT THIS
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Component
 @Order(0)

@@ -1,6 +1,8 @@
 package com.um.helpdesk.controller;
 
 import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import com.um.helpdesk.entity.*;
 import com.um.helpdesk.service.UserService;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
