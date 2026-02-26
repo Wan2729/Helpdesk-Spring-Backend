@@ -4,6 +4,8 @@ import com.um.helpdesk.entity.*;
 import com.um.helpdesk.repository.DepartmentRepository;
 import com.um.helpdesk.repository.TicketRepository;
 import com.um.helpdesk.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -412,5 +414,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public int getDepartmentWorkload(Long departmentId) {
         return (int) ticketRepository.countActiveTicketsByDepartment(departmentId);
+    }
+
+    @Override
+    public Page<Ticket> getAllTickets(Pageable pageable) {
+        return ticketRepository.findAll(pageable);
     }
 }

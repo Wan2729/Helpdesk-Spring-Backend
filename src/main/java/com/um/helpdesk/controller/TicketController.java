@@ -6,6 +6,10 @@ import com.um.helpdesk.entity.TechnicianSupportStaff;
 import com.um.helpdesk.entity.TicketStatus;
 import com.um.helpdesk.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -176,6 +180,18 @@ public class TicketController {
         System.out.println("GET /api/tickets/status/" + status + " - Fetching tickets by status");
         List<Ticket> tickets = ticketService.getTicketsByStatus(status);
         System.out.println("✓ Found " + tickets.size() + " ticket(s)\n");
+        return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Ticket>> getAllTickets(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        // Fetch 10 tickets per page, sorted by newest first
+        Pageable paging = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Ticket> tickets = ticketService.getAllTickets(paging);
+
         return ResponseEntity.ok(tickets);
     }
 }

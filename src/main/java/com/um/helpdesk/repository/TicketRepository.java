@@ -2,10 +2,12 @@ package com.um.helpdesk.repository;
 
 import com.um.helpdesk.entity.Ticket;
 import com.um.helpdesk.entity.TicketStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -32,4 +34,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.assignedDepartment.id = :deptId " +
            "AND t.status NOT IN ('CLOSED', 'RESOLVED')")
     long countActiveTicketsByDepartment(@Param("deptId") Long departmentId);
+
+    Page<Ticket> findByStatus(TicketStatus status, Pageable pageable);
+
+    Page<Ticket> findByAssignedDepartmentId(Long departmentId, Pageable pageable);
 }
