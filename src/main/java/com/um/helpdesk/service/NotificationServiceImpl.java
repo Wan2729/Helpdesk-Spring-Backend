@@ -2,6 +2,8 @@ package com.um.helpdesk.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.um.helpdesk.entity.*;
@@ -110,6 +112,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     // ========== FUNCTIONALITY 2: Automated Event-Based Notifications ==========
 
+    @Async
     @Override
     public void sendTicketSubmittedNotification(Long ticketId, Long userId) {
         User user = userRepository.findById(userId)
@@ -129,6 +132,7 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(notification.getId(), DeliveryChannel.IN_APP);
     }
 
+    @Async
     @Override
     public void sendTicketAssignedNotification(Long ticketId, Long technicianId) {
         User technician = userRepository.findById(technicianId)
@@ -148,6 +152,7 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(notification.getId(), DeliveryChannel.IN_APP);
     }
 
+    @Async
     @Override
     public void sendTicketStatusChangedNotification(Long ticketId, String oldStatus, String newStatus) {
         // For demo, send to admin (ID=1)
@@ -168,6 +173,7 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(notification.getId(), DeliveryChannel.IN_APP);
     }
 
+    @Async
     @Override
     public void sendTicketResolvedNotification(Long ticketId, Long userId) {
         User user = userRepository.findById(userId)
@@ -187,6 +193,7 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(notification.getId(), DeliveryChannel.IN_APP);
     }
 
+    @Async
     @Override
     public void sendTicketReopenedNotification(Long ticketId, Long technicianId) {
         User technician = userRepository.findById(technicianId)
@@ -208,6 +215,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     // ========== FUNCTIONALITY 3: Reminder & Escalation System ==========
 
+    @Async
     @Override
     public void sendReminderNotification(Long ticketId, Long technicianId) {
         User technician = userRepository.findById(technicianId)
@@ -228,6 +236,7 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(notification.getId(), DeliveryChannel.IN_APP);
     }
 
+    @Async
     @Override
     public void sendEscalationNotification(Long ticketId, Long supervisorId, int escalationLevel) {
         User supervisor = userRepository.findById(supervisorId)
@@ -258,6 +267,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     // ========== FUNCTIONALITY 4: Notification Delivery Management ==========
 
+    @Async
     @Override
     public void sendNotification(Long notificationId, DeliveryChannel channel) {
         Notification notification = notificationRepository.findById(notificationId)
