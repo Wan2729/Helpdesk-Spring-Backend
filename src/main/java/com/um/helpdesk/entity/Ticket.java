@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tickets")
+@Table(name = "tickets", indexes = {
+        @Index(name = "idx_ticket_status", columnList = "status"),
+        @Index(name = "idx_assigned_dept", columnList = "department_id")
+})
 public class Ticket extends BaseEntity {
 
     @Column(nullable = false)
