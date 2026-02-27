@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
-    private final DepartmentRepository departmentRepository;
+    private final DepartmentService departmentService;
     private final UserRepository userRepository;
 
     // Simple keyword-to-department mapping for routing
@@ -28,10 +28,10 @@ public class TicketServiceImpl implements TicketService {
     private static final int MAX_REASSIGNMENT_COUNT = 3;
 
     public TicketServiceImpl(TicketRepository ticketRepository,
-                             DepartmentRepository departmentRepository,
+                             DepartmentService departmentService,
                              UserRepository userRepository) {
         this.ticketRepository = ticketRepository;
-        this.departmentRepository = departmentRepository;
+        this.departmentService = departmentService;
         this.userRepository = userRepository;
         this.departmentKeywords = initializeDepartmentKeywords();
     }
@@ -194,14 +194,14 @@ public class TicketServiceImpl implements TicketService {
         // Find department by code
         if (matchedDeptCode != null) {
             final String code = matchedDeptCode;
-            return departmentRepository.findAll().stream()
+            return departmentService.getAllDepartments().stream()
                 .filter(d -> code.equals(d.getCode()))
                 .findFirst()
                 .orElse(null);
         }
 
         // Default to IT department if no match
-        return departmentRepository.findAll().stream()
+        return departmentService.getAllDepartments().stream()
             .filter(d -> "IT".equals(d.getCode()))
             .findFirst()
             .orElse(null);
@@ -317,8 +317,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket transferTicketToDepartment(Long ticketId, Long newDepartmentId, String reason) {
         Ticket ticket = getTicketById(ticketId);
-        Department newDepartment = departmentRepository.findById(newDepartmentId)
-            .orElseThrow(() -> new RuntimeException("Department not found"));
+        Department newDepartment = departmentService.getDepartmentById(newDepartmentId);
 
         Department oldDepartment = ticket.getAssignedDepartment();
         TechnicianSupportStaff oldTechnician = ticket.getAssignedTo();
