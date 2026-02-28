@@ -19,7 +19,6 @@ public interface TicketService {
 
     Ticket createTicket(Ticket ticket);
     Ticket getTicketById(Long id);
-    List<Ticket> getAllTickets();
     List<Ticket> getTicketsByStatus(TicketStatus status);
     List<Ticket> getTicketsByDepartment(Long departmentId);
     List<Ticket> getTicketsByTechnician(Long technicianId);

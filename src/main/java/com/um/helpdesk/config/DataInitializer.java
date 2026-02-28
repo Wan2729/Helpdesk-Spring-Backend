@@ -141,15 +141,6 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("✓ Data initialization complete with Historical Reporting Data!");
     }
 
-    private void createTicket(String title, String desc, TicketPriority prio, User user) {
-        Ticket t = new Ticket();
-        t.setTitle(title);
-        t.setDescription(desc);
-        t.setPriority(prio);
-        t.setSubmittedBy(user);
-        ticketService.createTicket(t);
-    }
-
     private void createClaimableTicket(String title, String desc, TicketPriority prio, User user, Department dept) {
         Ticket t = new Ticket();
         t.setTitle(title);
@@ -170,19 +161,19 @@ public class DataInitializer implements CommandLineRunner {
         LocalDateTime now = LocalDateTime.now();
 
         // 3 Weeks Ago (Trend: Low)
-        createPastTicket("Legacy System Login", TicketPriority.MEDIUM, student, tech1, now.minusWeeks(3));
-        createPastTicket("Old Printer Issue", TicketPriority.LOW, staff, tech1, now.minusWeeks(3));
+        createPastTicket("Legacy System Login", TicketPriority.MEDIUM, student, tech, now.minusWeeks(3));
+        createPastTicket("Old Printer Issue", TicketPriority.LOW, staff, tech, now.minusWeeks(3));
 
         // 2 Weeks Ago (Trend: Medium)
-        createPastTicket("Network Slowness", TicketPriority.HIGH, student, tech1, now.minusWeeks(2));
-        createPastTicket("Projector Bulb", TicketPriority.MEDIUM, staff, tech1, now.minusWeeks(2));
-        createPastTicket("Email Sync", TicketPriority.LOW, staff, tech1, now.minusWeeks(2));
-        createPastTicket("VPN Access", TicketPriority.HIGH, staff, tech1, now.minusWeeks(2));
+        createPastTicket("Network Slowness", TicketPriority.HIGH, student, tech, now.minusWeeks(2));
+        createPastTicket("Projector Bulb", TicketPriority.MEDIUM, staff, tech, now.minusWeeks(2));
+        createPastTicket("Email Sync", TicketPriority.LOW, staff, tech, now.minusWeeks(2));
+        createPastTicket("VPN Access", TicketPriority.HIGH, staff, tech, now.minusWeeks(2));
 
         // 1 Week Ago (Trend: High)
-        createPastTicket("Software Update", TicketPriority.LOW, student, tech1, now.minusWeeks(1));
-        createPastTicket("Mouse Broken", TicketPriority.LOW, staff, tech1, now.minusWeeks(1));
-        createPastTicket("Keyboard Stuck", TicketPriority.LOW, staff, tech1, now.minusWeeks(1));
+        createPastTicket("Software Update", TicketPriority.LOW, student, tech, now.minusWeeks(1));
+        createPastTicket("Mouse Broken", TicketPriority.LOW, staff, tech, now.minusWeeks(1));
+        createPastTicket("Keyboard Stuck", TicketPriority.LOW, staff, tech, now.minusWeeks(1));
 
         // SLA FAILURE TEST: Urgent Ticket submitted 2 days ago (Still Open = Breach)
         Ticket failure = new Ticket();
@@ -205,7 +196,7 @@ public class DataInitializer implements CommandLineRunner {
         lateResolve.setStatus(TicketStatus.OPEN);
         lateResolve.setSubmittedAt(now.minusDays(4));
         lateResolve.setResolvedAt(now);
-        lateResolve.setAssignedTo(tech1);
+        lateResolve.setAssignedTo(tech);
         ticketRepository.save(lateResolve);
 
         System.out.println("✓ Data initialization complete with Historical Reporting Data!");

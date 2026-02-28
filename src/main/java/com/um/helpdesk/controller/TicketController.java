@@ -29,15 +29,6 @@ public class TicketController {
     }
 
     // ========== BASIC TICKET OPERATIONS ==========
-
-    @GetMapping
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        System.out.println("GET /api/tickets - Fetching all tickets");
-        List<Ticket> tickets = ticketService.getAllTickets();
-        System.out.println("✓ Found " + tickets.size() + " ticket(s)\n");
-        return ResponseEntity.ok(tickets);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable Long id) {
         System.out.println("GET /api/tickets/" + id + " - Fetching ticket");
