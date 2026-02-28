@@ -1,176 +1,63 @@
-🎓 University Helpdesk System (Spring Boot Backend)
+# University Helpdesk System (Spring Boot Backend)
 
-A high-performance, enterprise-grade Helpdesk REST API built with Spring Boot.
-This system manages ticket routing, technician assignments, departmental transfers, and workload analytics for a university campus environment.
+A high-performance, enterprise-grade Helpdesk REST API built with Spring Boot. This system manages ticket routing, technician assignments, departmental transfers, and workload analytics for a university campus environment.
 
-🚀 Key Features
-🔄 Automated Ticket Routing
+## 🚀 Key Features
 
-Analyzes ticket descriptions using keyword-matching algorithms to automatically route issues to the correct department (IT, Facilities, Finance, etc.).
+* **Automated Ticket Routing:** Analyzes ticket descriptions using keyword-matching algorithms to automatically route issues to the correct department (IT, Facilities, Finance, etc.).
+* **Smart Auto-Assignment:** Automatically assigns routed tickets to the least busy technician within a specific department to ensure balanced workloads.
+* **High-Performance Data Fetching:** Implements Spring Data JPA **Pagination** to prevent memory overload when fetching massive ticket datasets.
+* **Optimized Caching:** Utilizes Spring `@Cacheable` to store static data (like Department directories) in memory, drastically reducing unnecessary database queries.
+* **Asynchronous Processing:** Implements `@Async` background threads to handle non-blocking event notifications without slowing down the main API response times.
+* **Ticket Lifecycle Management:** Full support for ticket creation, technician claiming, internal re-assignment, and inter-departmental transfers.
 
-👨‍🔧 Smart Auto-Assignment
+## 🛠️ Tech Stack
 
-Automatically assigns routed tickets to the least busy technician within a specific department to ensure balanced workloads and improved efficiency.
+* **Language:** Java 17
+* **Framework:** Spring Boot 3.5.x (Spring Web, Spring Data JPA, Spring Cache)
+* **Database:** PostgreSQL (Hosted on Supabase via HikariCP Connection Pool)
+* **Architecture:** 3-Tier Layered Architecture (Controller / Service / Repository)
+* **Tools:** Maven, Lombok, Postman (Testing)
 
-📊 High-Performance Data Fetching
+## 📋 Database Schema
+The application uses Hibernate's `ddl-auto=update` to automatically generate the relational schema, which includes:
+* `User` (Inheritance strategy for Administrators, Students, Staff, and Technicians)
+* `Ticket` (Tracks status, priority, submitter, assignee, and assignment history)
+* `Department` (Managed via in-memory caching)
+* `Notification` (Event-driven alerts)
 
-Implements Spring Data JPA Pagination to prevent memory overload when fetching large ticket datasets.
+## ⚙️ Local Setup & Installation
 
-⚡ Optimized Caching
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/YOUR_USERNAME/Helpdesk-Spring-Backend.git](https://github.com/YOUR_USERNAME/Helpdesk-Spring-Backend.git)
+   cd Helpdesk-Spring-Backend
 
-Uses Spring @Cacheable to store static data (e.g., Department directories) in memory, significantly reducing unnecessary database queries.
-
-🔔 Asynchronous Processing
-
-Implements @Async background threads to handle non-blocking event notifications without slowing down main API response times.
-
-🔁 Ticket Lifecycle Management
-
-Full support for:
-
-Ticket creation
-
-Technician claiming
-
-Internal re-assignment
-
-Inter-departmental transfers
-
-Status and priority tracking
-
-🛠️ Tech Stack
-Layer	Technology
-Language	Java 17
-Framework	Spring Boot 3.5.x (Spring Web, Spring Data JPA, Spring Cache)
-Database	PostgreSQL (Hosted on Supabase via HikariCP Connection Pool)
-Architecture	3-Tier Layered Architecture (Controller / Service / Repository)
-Build Tool	Maven
-Utilities	Lombok, Postman (API Testing)
-🗄️ Database Schema
-
-The application uses Hibernate's ddl-auto=update to automatically generate the relational schema.
-
-Core Entities:
-
-User
-
-Uses inheritance strategy
-
-Roles include: Administrator, Student, Staff, Technician
-
-Ticket
-
-Tracks:
-
-Status
-
-Priority
-
-Submitter
-
-Assignee
-
-Assignment history
-
-Department
-
-Managed via in-memory caching
-
-Notification
-
-Event-driven alert system
-
-⚙️ Local Setup & Installation
-1️⃣ Clone the Repository
-git clone https://github.com/YOUR_USERNAME/Helpdesk-Spring-Backend.git
-cd Helpdesk-Spring-Backend
-2️⃣ Configure the Database
-
+2. **Configure the Database:**
 This project requires a PostgreSQL database.
 
-Open:
+Open src/main/resources/application.properties.
 
-src/main/resources/application.properties
+Replace the spring.datasource.url and password with your own PostgreSQL or Supabase connection string.
 
-Replace the following properties with your own PostgreSQL or Supabase credentials:
+3. **Run the Application:**
 
-spring.datasource.url=YOUR_DATABASE_URL
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
-3️⃣ Run the Application
+Bash
 ./mvnw spring-boot:run
+Note: The system includes a DataInitializer that will automatically populate the database with dummy departments, users, and historical tickets upon the first startup.
 
-Or on Windows:
+4. **Test the API:**
+The server runs on http://localhost:8080. You can test the endpoints using Postman or the provided lightweight index.html frontend dashboard.
 
-mvnw.cmd spring-boot:run
+## 🔮 Future Improvements / Roadmap
+While the core routing and assignment engine is complete, the following enterprise features are planned for future iterations:
 
-✅ Note:
-The system includes a DataInitializer that automatically populates the database with:
+1. Security: Implement Spring Security with JWT (JSON Web Tokens) for robust authentication and role-based access control (RBAC).
 
-Dummy departments
+2. Data Transfer Objects (DTOs): Abstract database entities from the presentation layer to prevent sensitive data leakage.
 
-Sample users
+3. Input Validation: Integrate spring-boot-starter-validation to sanitize and verify incoming payload requests.
 
-Historical tickets
+4. File Attachments: Add MultipartFile support via AWS S3 or Supabase Storage for users to upload error screenshots.
 
-This runs only on first startup.
-
-4️⃣ Test the API
-
-The server runs on:
-
-http://localhost:8080
-
-You can test endpoints using:
-
-Postman
-
-The provided lightweight index.html frontend dashboard
-
-🏗️ Architecture Overview
-
-The application follows a 3-Tier Layered Architecture:
-
-Controller → Service → Repository → Database
-
-Controller Layer → Handles HTTP requests & responses
-
-Service Layer → Contains business logic (routing, assignment, workload balancing)
-
-Repository Layer → Handles database access using Spring Data JPA
-
-🔮 Future Improvements / Roadmap
-
-While the core routing and assignment engine is complete, the following enterprise-grade features are planned:
-
-🔐 Security
-
-Implement Spring Security
-
-JWT-based authentication
-
-Role-Based Access Control (RBAC)
-
-📦 Data Transfer Objects (DTOs)
-
-Separate entities from API responses
-
-Prevent sensitive data exposure
-
-✅ Input Validation
-
-Integrate spring-boot-starter-validation
-
-Enforce request payload sanitization
-
-📎 File Attachments
-
-Add MultipartFile support
-
-Upload screenshots via AWS S3 or Supabase Storage
-
-📧 SMTP Integration
-
-Replace console-based notifications
-
-Enable real automated email alerts via spring-boot-starter-mail
+5. SMTP Integration: Replace console-based notifications with real automated email alerts using spring-boot-starter-mail.
